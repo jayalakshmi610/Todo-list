@@ -7,12 +7,10 @@ const API_URL = "https://667d8b82297972455f658def.mockapi.io/todo/ToDo";
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
-  const [category, setCategory] = useState("favourites");
   const [isEditing, setIsEditing] = useState(null);
   const [editTask, setEditTask] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-
   const [selectedCategory, setSelectedCategory] = useState("Favourites");
 
   useEffect(() => {
@@ -32,12 +30,11 @@ const TodoList = () => {
       try {
         const response = await axios.post(API_URL, {
           task: newTask,
-          category: category,
+          category: selectedCategory,
           state: false,
         });
         setTasks((prevTasks) => [...prevTasks, response.data]);
         setNewTask("");
-        setCategory("favourites");
       } catch (error) {
         console.error("Error adding task:", error);
       }
@@ -97,15 +94,15 @@ const TodoList = () => {
 
   const getCategoryColor = (category) => {
     switch (category) {
-      case "favourites":
+      case "Favourites":
         return "bg-red-500 rounded-full";
-      case "groceries":
+      case "Groceries":
         return "bg-green-500 rounded-full";
-      case "study":
+      case "Study":
         return "bg-orange-500 rounded-full";
-      case "sports":
+      case "Sports":
         return "bg-violet-500 rounded-full";
-      case "work":
+      case "Work":
         return "bg-blue-500 rounded-full";
       default:
         return "bg-gray-500 rounded-full";
@@ -120,11 +117,15 @@ const TodoList = () => {
 
   const { completed, pending } = countTasks(tasks);
 
+  const filteredTasks = tasks.filter(
+    (task) => task.category === selectedCategory
+  );
+
   return (
     <div className="flex">
       <Navbar setSelectedCategory={setSelectedCategory} />
-      <div className="mx-auto w-full font-bold flex text-center items-center flex-col gap-5">
-        <div className="w-full bg-white backdrop-blur-lg px-5 py-5 rounded-md">
+      <div className="mx-auto w-full bg-orange-200 font-bold flex text-center items-center flex-col gap-5">
+        <div className="w-full  backdrop-blur-lg px-5 py-5 rounded-md">
           <div className="mb-5">
             <input
               type="text"
@@ -159,7 +160,7 @@ const TodoList = () => {
               Pending: {pending}
             </button>
           </div>
-          {tasks.map((task) => (
+          {filteredTasks.map((task) => (
             <div
               key={task.id}
               className="mb-2 flex items-center justify-between w-full px-5"
@@ -169,7 +170,7 @@ const TodoList = () => {
                   type="checkbox"
                   checked={task.state}
                   onChange={() => toggleTaskCompletion(task)}
-                  className="mr-2 w-6 h-6 rounded-lg  "
+                  className="mr-2 w-6 h-6 rounded-lg"
                   style={{
                     accentColor: task.state ? "green" : "initial",
                     borderColor: "red",
@@ -236,7 +237,7 @@ const TodoList = () => {
                 )}
                 <button onClick={() => handleDeleteTask(task)} className="ml-2">
                   <svg
-                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    className="w-6 h-6 text-gray-800 dark:text-white"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -246,9 +247,9 @@ const TodoList = () => {
                   >
                     <path
                       stroke="red"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
                     />
                   </svg>

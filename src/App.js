@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div className="w-full h-full bg-fuchsia-100">
-      <div className=" container  mx-auto w-full h-screen  ps-22 flex bg-white rounded-md">
+      <div className=" container  mx-auto w-full h-screen  ps-22 flex bg-orange-100 rounded-md">
         <div className=" flex w-full rounded-xl px-10 py-10 ">
           <>
             <hr className="w-1 h-auto my-auto bg-gray-100 border-0 rounded mx-4 md:mx-auto md:my-10 dark:bg-gray-700" />
